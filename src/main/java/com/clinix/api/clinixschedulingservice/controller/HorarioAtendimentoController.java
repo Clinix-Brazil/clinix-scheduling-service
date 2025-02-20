@@ -3,12 +3,9 @@ package com.clinix.api.clinixschedulingservice.controller;
 import com.clinix.api.clinixschedulingservice.model.HorarioAtendimento;
 import com.clinix.api.clinixschedulingservice.service.HorarioAtendimentoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/horario")
