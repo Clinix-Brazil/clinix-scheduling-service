@@ -1,8 +1,8 @@
-package com.clinix.api.clinixschedulingservice.rmi;
+package clinix.com.clinix_sistema_usuarios;
 
-import com.clinix.api.clinixschedulingservice.usuarios.MedicoRmiDTO;
-import com.clinix.api.clinixschedulingservice.usuarios.PacienteRmiDTO;
-import com.clinix.api.clinixschedulingservice.usuarios.UsuarioService;
+import clinix.com.clinix_sistema_usuarios.dto.MedicoRmiDTO;
+import clinix.com.clinix_sistema_usuarios.dto.PacienteRmiDTO;
+import clinix.com.clinix_sistema_usuarios.service.UsuarioService;
 
 import java.rmi.Naming;
 
