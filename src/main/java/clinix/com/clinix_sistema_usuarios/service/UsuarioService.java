@@ -1,4 +1,7 @@
-package com.clinix.api.clinixschedulingservice.usuarios;
+package clinix.com.clinix_sistema_usuarios.service;
+
+import clinix.com.clinix_sistema_usuarios.dto.MedicoRmiDTO;
+import clinix.com.clinix_sistema_usuarios.dto.PacienteRmiDTO;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
