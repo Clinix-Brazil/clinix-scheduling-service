@@ -1,7 +1,5 @@
 package com.clinix.api.clinixschedulingservice.controller;
 
-import com.clinix.api.clinixschedulingservice.model.HorarioAtendimento;
-import com.clinix.api.clinixschedulingservice.service.HorarioAtendimentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,17 +9,17 @@ import java.util.List;
 @RequestMapping("/horario")
 public class HorarioAtendimentoController {
 
-    private final HorarioAtendimentoService horarioAtendimentoService;
+//    private final HorarioAtendimentoService horarioAtendimentoService;
+//
+//    @Autowired
+//    public HorarioAtendimentoController(HorarioAtendimentoService horarioAtendimentoService) {
+//        this.horarioAtendimentoService = horarioAtendimentoService;
+//    }
 
-    @Autowired
-    public HorarioAtendimentoController(HorarioAtendimentoService horarioAtendimentoService) {
-        this.horarioAtendimentoService = horarioAtendimentoService;
-    }
-
-    @GetMapping("/list")
-    public List<HorarioAtendimento> listarHorarios() {
-        return this.horarioAtendimentoService.listarHorarios();
-    }
+//    @GetMapping("/list")
+//    public List<HorarioAtendimento> listarHorarios() {
+//        return this.horarioAtendimentoService.listarHorarios();
+//    }
 
 //    @GetMapping("/disponiveis/{medicoId}")
 //    public List<HorarioAtendimento> listarHorariosDisponiveis(@PathVariable Long medicoId) {
