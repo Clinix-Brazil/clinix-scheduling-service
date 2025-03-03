@@ -12,9 +12,11 @@ import java.util.Optional;
 public class AppointmentSchedulingService {
 
     private final AppointmentSchedulingRepository appointmentSchedulingRepository;
+    private final UserClientService userClientService;
 
-    public AppointmentSchedulingService(AppointmentSchedulingRepository appointmentSchedulingRepository) {
+    public AppointmentSchedulingService(AppointmentSchedulingRepository appointmentSchedulingRepository, UserClientService userClientService) {
         this.appointmentSchedulingRepository = appointmentSchedulingRepository;
+        this.userClientService = userClientService;
     }
 
     public List<AppointmentScheduling> findAll() {
@@ -26,6 +28,9 @@ public class AppointmentSchedulingService {
     }
 
     public AppointmentScheduling save(AppointmentScheduling appointment) {
+        userClientService.doctorExists(appointment.getDoctorId());
+        userClientService.patientExists(appointment.getPatientId());
+
         return appointmentSchedulingRepository.save(appointment);
     }
 

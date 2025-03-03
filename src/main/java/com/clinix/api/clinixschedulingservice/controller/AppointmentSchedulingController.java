@@ -20,8 +20,8 @@ public class AppointmentSchedulingController {
         this.appointmentService = appointmentService;
     }
 
-    @PostMapping
-    public ResponseEntity<AppointmentScheduling> create(@Valid @RequestBody AppointmentScheduling appointment) {
+    @PostMapping("/save")
+    public ResponseEntity<AppointmentScheduling> save(@Valid @RequestBody AppointmentScheduling appointment) {
         AppointmentScheduling savedAppointment = appointmentService.save(appointment);
         return ResponseEntity.ok(savedAppointment);
     }
