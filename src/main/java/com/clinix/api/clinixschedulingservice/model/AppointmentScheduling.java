@@ -38,7 +38,7 @@ public class AppointmentScheduling {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private AppointmentStatus status = AppointmentStatus.SCHEDULED;
+    private AppointmentStatus status = AppointmentStatus.PENDING;
 
     @Column(name = "cancellation_reason")
     private String cancellationReason;
