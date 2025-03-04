@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "tb_appointment_scheduling")
+@Table(name = "tb_appointment")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -28,13 +28,17 @@ public class AppointmentScheduling {
     private Long patientId;
 
     @NotNull
+    @Column(name = "clinic_id", nullable = false)
+    private Long clinicId;
+
+    @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(name = "appointment_date_time", nullable = false)
-    private LocalDateTime appointmentDateTime;
+    @Column(name = "date_time", nullable = false)
+    private LocalDateTime dateTime;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private AppointmentStatus appointmentStatus = AppointmentStatus.SCHEDULED;
+    private AppointmentStatus status = AppointmentStatus.SCHEDULED;
 
     @Column(name = "cancellation_reason")
     private String cancellationReason;

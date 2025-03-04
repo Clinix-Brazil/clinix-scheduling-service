@@ -3,6 +3,11 @@ package com.clinix.api.clinixschedulingservice.service;
 import com.clinix.api.clinixschedulingservice.model.AppointmentScheduling;
 import com.clinix.api.clinixschedulingservice.model.AppointmentStatus;
 import com.clinix.api.clinixschedulingservice.repository.AppointmentSchedulingRepository;
+import com.clinix.api.clinixschedulingservice.rmi.ClinicaServiceClient;
+import com.clinix.api.clinixschedulingservice.rmi.UsuarioServiceClient;
+import com.clinix.api.dto.ClinicaRmiDTO;
+import com.clinix.api.dto.MedicoRmiDTO;
+import com.clinix.api.dto.PacienteRmiDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,11 +17,13 @@ import java.util.Optional;
 public class AppointmentSchedulingService {
 
     private final AppointmentSchedulingRepository appointmentSchedulingRepository;
-    private final UserClientService userClientService;
+    private final UsuarioServiceClient usuarioServiceClient;
+    private final ClinicaServiceClient clinicaServiceClient;
 
-    public AppointmentSchedulingService(AppointmentSchedulingRepository appointmentSchedulingRepository, UserClientService userClientService) {
+    public AppointmentSchedulingService(AppointmentSchedulingRepository appointmentSchedulingRepository, UsuarioServiceClient usuarioServiceClient, ClinicaServiceClient clinicaServiceClient) {
         this.appointmentSchedulingRepository = appointmentSchedulingRepository;
-        this.userClientService = userClientService;
+        this.usuarioServiceClient = usuarioServiceClient;
+        this.clinicaServiceClient = clinicaServiceClient;
     }
 
     public List<AppointmentScheduling> findAll() {
@@ -28,15 +35,27 @@ public class AppointmentSchedulingService {
     }
 
     public AppointmentScheduling save(AppointmentScheduling appointment) {
-        userClientService.doctorExists(appointment.getDoctorId());
-        userClientService.patientExists(appointment.getPatientId());
+        MedicoRmiDTO medico = usuarioServiceClient.getMedico(appointment.getDoctorId());
+        if (medico == null) {
+            throw new RuntimeException("Médico não encontrado via RMI!");
+        }
+
+        PacienteRmiDTO paciente = usuarioServiceClient.getPaciente(appointment.getPatientId());
+        if (paciente == null) {
+            throw new RuntimeException("Paciente não encontrado via RMI!");
+        }
+
+        ClinicaRmiDTO clinica = clinicaServiceClient.getClinica(appointment.getClinicId());
+        if (clinica == null) {
+            throw new RuntimeException("Clínica não encontrada via RMI!");
+        }
 
         return appointmentSchedulingRepository.save(appointment);
     }
 
     public Optional<AppointmentScheduling> updateStatus(Long id, AppointmentStatus status, String cancellationReason) {
         return appointmentSchedulingRepository.findById(id).map(appointment -> {
-            appointment.setAppointmentStatus(status);
+            appointment.setStatus(status);
             if (status == AppointmentStatus.CANCELED) {
                 appointment.setCancellationReason(cancellationReason);
             }
@@ -46,7 +65,7 @@ public class AppointmentSchedulingService {
 
     public boolean cancel(Long id, String reason) {
         return appointmentSchedulingRepository.findById(id).map(appointment -> {
-            appointment.setAppointmentStatus(AppointmentStatus.CANCELED);
+            appointment.setStatus(AppointmentStatus.CANCELED);
             appointment.setCancellationReason(reason);
             appointmentSchedulingRepository.save(appointment);
             return true;
