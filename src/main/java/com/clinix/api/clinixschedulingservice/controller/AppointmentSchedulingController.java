@@ -1,5 +1,6 @@
 package com.clinix.api.clinixschedulingservice.controller;
 
+import com.clinix.api.clinixschedulingservice.dto.AppointmentSchedulingDTO;
 import com.clinix.api.clinixschedulingservice.model.AppointmentScheduling;
 import com.clinix.api.clinixschedulingservice.model.AppointmentStatus;
 import com.clinix.api.clinixschedulingservice.service.AppointmentSchedulingService;
@@ -27,17 +28,16 @@ public class AppointmentSchedulingController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AppointmentScheduling> getById(@PathVariable Long id) {
-        Optional<AppointmentScheduling> appointment = appointmentService.findById(id);
+    public ResponseEntity<AppointmentSchedulingDTO> getById(@PathVariable Long id) {
+        Optional<AppointmentSchedulingDTO> appointment = appointmentService.findById(id);
         return appointment.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/list")
-    public List<AppointmentScheduling> getAll() {
+    public List<AppointmentSchedulingDTO> getAll() {
         return appointmentService.findAll();
     }
-
     @PatchMapping("/{id}/status")
     public ResponseEntity<AppointmentScheduling> updateStatus(
             @PathVariable Long id,

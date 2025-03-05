@@ -1,5 +1,6 @@
 package com.clinix.api.clinixschedulingservice.service;
 
+import com.clinix.api.clinixschedulingservice.dto.AppointmentSchedulingDTO;
 import com.clinix.api.clinixschedulingservice.model.AppointmentScheduling;
 import com.clinix.api.clinixschedulingservice.model.AppointmentStatus;
 import com.clinix.api.clinixschedulingservice.repository.AppointmentSchedulingRepository;
@@ -26,12 +27,13 @@ public class AppointmentSchedulingService {
         this.clinicaServiceClient = clinicaServiceClient;
     }
 
-    public List<AppointmentScheduling> findAll() {
-        return appointmentSchedulingRepository.findAll();
+    public List<AppointmentSchedulingDTO> findAll() {
+        List<AppointmentScheduling> appointments = appointmentSchedulingRepository.findAll();
+        return appointments.stream().map(this::convertToDTO).toList();
     }
 
-    public Optional<AppointmentScheduling> findById(Long id) {
-        return appointmentSchedulingRepository.findById(id);
+    public Optional<AppointmentSchedulingDTO> findById(Long id) {
+        return appointmentSchedulingRepository.findById(id).map(this::convertToDTO);
     }
 
     public AppointmentScheduling save(AppointmentScheduling appointment) {
@@ -79,4 +81,20 @@ public class AppointmentSchedulingService {
         }
         return false;
     }
+
+    private AppointmentSchedulingDTO convertToDTO(AppointmentScheduling appointment) {
+        MedicoRmiDTO doctor = usuarioServiceClient.getMedico(appointment.getDoctorId());
+        PacienteRmiDTO patient = usuarioServiceClient.getPaciente(appointment.getPatientId());
+        ClinicaRmiDTO clinic = clinicaServiceClient.getClinica(appointment.getClinicId());
+
+        return new AppointmentSchedulingDTO(
+                appointment.getId(),
+                doctor != null ? doctor.nome() : "Desconhecido",
+                patient != null ? patient.nome() : "Desconhecido",
+                clinic != null ? clinic.nomeFantasia() : "Desconhecida",
+                appointment.getDateTime(),
+                appointment.getStatus()
+        );
+    }
+
 }
