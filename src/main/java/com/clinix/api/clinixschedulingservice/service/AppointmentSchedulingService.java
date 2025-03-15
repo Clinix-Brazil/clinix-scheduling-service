@@ -58,7 +58,7 @@ public class AppointmentSchedulingService {
     public Optional<AppointmentScheduling> updateStatus(Long id, AppointmentStatus status, String cancellationReason) {
         return appointmentSchedulingRepository.findById(id).map(appointment -> {
             appointment.setStatus(status);
-            if (status == AppointmentStatus.CANCELED) {
+            if (status == AppointmentStatus.CANCELADO) {
                 appointment.setCancellationReason(cancellationReason);
             }
             return appointmentSchedulingRepository.save(appointment);
@@ -67,7 +67,7 @@ public class AppointmentSchedulingService {
 
     public boolean cancel(Long id, String reason) {
         return appointmentSchedulingRepository.findById(id).map(appointment -> {
-            appointment.setStatus(AppointmentStatus.CANCELED);
+            appointment.setStatus(AppointmentStatus.CANCELADO);
             appointment.setCancellationReason(reason);
             appointmentSchedulingRepository.save(appointment);
             return true;

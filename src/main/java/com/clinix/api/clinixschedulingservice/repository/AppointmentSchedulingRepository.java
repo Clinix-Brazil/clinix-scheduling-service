@@ -8,10 +8,5 @@ import java.util.List;
 
 @Repository
 public interface AppointmentSchedulingRepository extends JpaRepository<AppointmentScheduling, Long> {
-//    List<HorarioAtendimento> findByMedicoIdAndReservadoFalse(Long medicoId);
-//
-//    List<HorarioAtendimento> findByMedicoIdAndReservadoTrue(Long medicoId);
-//
-//    List<HorarioAtendimento> findByMedicoId(Long medicoId);
 
 }
