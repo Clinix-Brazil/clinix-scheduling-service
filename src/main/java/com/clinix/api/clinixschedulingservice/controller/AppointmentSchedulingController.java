@@ -61,4 +61,11 @@ public class AppointmentSchedulingController {
         boolean deleted = appointmentService.delete(id);
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AppointmentScheduling> update(@PathVariable Long id, @RequestBody AppointmentScheduling appointment) {
+        System.out.println(appointment);
+        AppointmentScheduling savedAppointment = appointmentService.save(appointment);
+        return ResponseEntity.ok(savedAppointment);
+    }
 }
