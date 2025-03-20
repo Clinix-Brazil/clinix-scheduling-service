@@ -8,6 +8,7 @@ import com.clinix.api.interfaces.UsuarioService;
 
 import java.rmi.Naming;
 
+import com.clinix.api.rmi.RmiClientHelper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,16 +17,12 @@ public class ClinicaServiceClient {
     private ClinicaService clinicaService;
 
     public ClinicaServiceClient() {
-        try {
-            clinicaService = (ClinicaService) Naming.lookup("rmi://localhost:1099/ClinicaService");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.clinicaService = RmiClientHelper.connect("rmi://localhost:1099/ClinicaService", ClinicaService.class);
     }
 
     public ClinicaRmiDTO getClinica(Long id) {
         try {
-            return clinicaService.getClinicaPorId(id);
+            return clinicaService != null ? clinicaService.getClinicaPorId(id) : null;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
